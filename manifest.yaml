@@ -1,6 +1,11 @@
 manifestVersion: 1
 name: "@keeb/mixpanel"
-version: "2026.03.01.2"
+version: "2026.03.02.2"
 description: "Mixpanel analytics API integration (segmentation, funnels, retention, boards)"
+repository: https://github.com/keeb/swamp-mixpanel
+tags:
+  - mixpanel
+  - analytics
+  - saas
 models:
   - mixpanel.ts
