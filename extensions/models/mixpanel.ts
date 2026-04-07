@@ -1,20 +1,23 @@
 import { z } from "npm:zod@4";
 
 const GlobalArgsSchema = z.object({
-  serviceAccountUsername: z.string().describe("Mixpanel service account username"),
+  serviceAccountUsername: z.string().describe(
+    "Mixpanel service account username",
+  ),
   serviceAccountSecret: z.string().describe("Mixpanel service account secret"),
   projectId: z.string().describe("Mixpanel project ID"),
-  region: z.enum(["us", "eu"]).default("us").describe("Mixpanel data residency region"),
+  region: z.enum(["us", "eu"]).default("us").describe(
+    "Mixpanel data residency region",
+  ),
 });
 
 async function mixpanelFetch(context, path, params = {}) {
   const { serviceAccountUsername, serviceAccountSecret, projectId, region } =
     context.globalArgs;
 
-  const baseUrl =
-    region === "eu"
-      ? "https://eu.mixpanel.com/api/2.0"
-      : "https://mixpanel.com/api/2.0";
+  const baseUrl = region === "eu"
+    ? "https://eu.mixpanel.com/api/2.0"
+    : "https://mixpanel.com/api/2.0";
 
   const credentials = btoa(serviceAccountUsername + ":" + serviceAccountSecret);
 
@@ -223,14 +226,21 @@ export const model = {
         boardId: z.string().describe("Board ID from Mixpanel URL"),
       }),
       execute: async (args, context) => {
-        const { serviceAccountUsername, serviceAccountSecret, projectId, region } =
-          context.globalArgs;
+        const {
+          serviceAccountUsername,
+          serviceAccountSecret,
+          projectId,
+          region,
+        } = context.globalArgs;
 
         const baseHost = region === "eu" ? "eu.mixpanel.com" : "mixpanel.com";
-        const credentials = btoa(serviceAccountUsername + ":" + serviceAccountSecret);
+        const credentials = btoa(
+          serviceAccountUsername + ":" + serviceAccountSecret,
+        );
 
         // Try the app/boards endpoint
-        const url = `https://${baseHost}/api/app/boards/${args.boardId}?project_id=${projectId}`;
+        const url =
+          `https://${baseHost}/api/app/boards/${args.boardId}?project_id=${projectId}`;
         context.logger.info("Fetching board {url}", { url });
 
         const response = await fetch(url, {
